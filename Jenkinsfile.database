@@ -1,0 +1,21 @@
+pipeline{
+    agent {lable 'electronix'}
+
+    stages{
+        stage('creating Database')
+        steps{
+            sh 'python3 scripts/create_db.py'
+        
+        }
+    }
+
+    post{
+        success{
+            echo 'Database Creation Successfull ✅'
+        }
+
+        failure{
+            echo'Database Failed ❌'
+        }
+    }
+}
