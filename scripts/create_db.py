@@ -14,7 +14,7 @@ def create_database():
 
     try:
         with connection.cursor() as cursor:
-            cursor.execute(f"CREATE DATABASE IF NOT EXISTS {os.getenv("DB_NAME")};")
+            cursor.execute(f"CREATE DATABASE IF NOT EXISTS {os.getenv('DB_NAME')};")
             connection.commit()
             print(F"Database : {os.getenv("DB_NAME")} is create or exists ✅" )
     except Exception as e:
@@ -23,5 +23,5 @@ def create_database():
     finally:
         connection.close()
 
-if __name__=="main":
+if __name__=="__main__":
     create_database()
