@@ -1,0 +1,9 @@
+services:
+backend:
+image: 594474085977.dkr.ecr.us-west-1.amazonaws.com/electronix-ecr
+prots:
+  - "5000:5000"
+env_file:
+  - .env
+
+restart : unless-stopped
