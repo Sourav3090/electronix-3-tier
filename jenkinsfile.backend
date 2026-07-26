@@ -2,20 +2,52 @@ pipeline{
     agent {label 'electronix'}
 
     environment {
-        ECR_REPO='594474085977.dkr.ecr.us-west-1.amazonaws.com/electronix-ecr'
+        ECR_REPO='594474085977.dkr.ecr.us-west-1.amazonaws.com/electronix-ecr7'
         AWS_REGION = "us-west-1"
-        
+        PRODUCTION_IP='52.52.191.105'
     }
 
-    stages{
-        stage("Test ECR Login"){
-            steps {
-                sh '''
-                aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${ECR_REPO}
-                '''
+    stage('Backend PipeLine'){
+        when {
+            changeset "backend/**"
+        }
+
+        stages{
+
+            stage('Build Docker Image'){
+                steps{
+                    dir("backend"){
+                        sh 'docker build -t electronix-backend:${BUILD_NUMBER}'
+                    }
+                }
+            }
+
+            stage("Test ECR Login"){
+                steps {
+                    sh '''
+                    aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${ECR_REPO}
+                    '''
+                }
+            }
+
+            stage ("Tag & Push to ECR"){
+                steps{
+                    sh '''
+                    docker tag electronix-backend:${BUILD_NUMBER} ${ECR_REPO}:${BUILD_NUMBER}
+                    docker tag electronix-backend:${ECR_REPO}:latest
+                    docker push ${ECR_REPO}:${BUILD_NUMBER}
+                    docker push ${ECR_REPO}:latest
+
+                    echo "Pushed Success ✅"
+                    '''
+                }
             }
         }
-    }
+
+
+}
+
+    
  
   post {
     success{
