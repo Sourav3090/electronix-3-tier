@@ -7,7 +7,7 @@ pipeline{
         PRODUCTION_IP='52.52.191.105'
     }
 
-  stages{
+   stages{
 
             stage('Build Docker Image'){
                 steps{
@@ -42,7 +42,7 @@ pipeline{
                 steps{
                     sshagent(['prod-server-ssh-key']){
                     sh '''
-                    ssh -o StrictHostKeyChecking=no ubuntu@${PRODUCTION_IP} "echo Connection Success "
+                    ssh -o StrictHostKeyChecking=no ubuntu@${PRODUCTION_IP} "echo Connection Success"
                     '''
                     }
                     
