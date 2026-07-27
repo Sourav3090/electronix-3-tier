@@ -1,6 +1,7 @@
 services:
 backend:
 image: 594474085977.dkr.ecr.us-west-1.amazonaws.com/electronix-ecr
+container-name: electronix-backend
 prots:
   - "5000:5000"
 env_file:
